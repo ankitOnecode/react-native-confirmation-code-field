@@ -83,7 +83,11 @@ function CodeFieldComponent(
         clearButtonMode="never"
         autoCapitalize="characters"
         underlineColorAndroid="transparent"
-        maxLength={cellCount+value?.split(" ").length-1}
+        maxLength={
+          value && value.length > cellCount
+            ? cellCount + value?.split(' ').length - 1
+            : cellCount
+        }
         {...rest}
         value={value}
         onBlur={focusState.onBlur}
