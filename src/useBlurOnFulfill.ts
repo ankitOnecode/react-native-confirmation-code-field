@@ -10,7 +10,7 @@ export const useBlurOnFulfill = ({value, cellCount}: Options) => {
   const inputRef = useRef<TextInput>(null);
 
   useEffect(() => {
-    if (value && value.length === cellCount) {
+    if (value && !value?.includes(" ") && value.length === cellCount) {
       const inputInstance = inputRef.current;
 
       if (inputInstance) {

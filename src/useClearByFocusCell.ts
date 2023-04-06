@@ -1,4 +1,4 @@
-import {MouseEvent, useMemo, useRef} from 'react';
+import {MouseEvent, useMemo, useRef, useEffect} from 'react';
 import {GestureResponderEvent, LayoutChangeEvent, Platform} from 'react-native';
 
 interface Layout {
@@ -47,13 +47,20 @@ export const useClearByFocusCell = (options: Options): HookResult => {
   const cellsLayouts = useRef<LayoutsMap>({});
 
   valueRef.current = options;
+  const { setValue } = valueRef.current;
+
+  useEffect(() => {
+    if (options.value.length > 4) {
+      setValue(options.value.length > 4 ? options.value.replace(" ", options.value[options.value.length - 1]).slice(0, 4) : options.value);
+    }
+  }, [options.value])
 
   const clearCodeByCoords = (coords: Coords) => {
     const index = findIndex(coords, cellsLayouts.current);
 
     if (index !== -1) {
       const {value, setValue} = valueRef.current;
-      const text = (value || '').slice(0, index);
+      const text = value.length > 0 ? value.substring(0, index) + ' ' + value.substring(index + 1) : (value || '').slice(0, index);
 
       setValue(text);
     }
