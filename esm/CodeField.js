@@ -1,8 +1,8 @@
-import {TextInput, View} from 'react-native';
-import React, {forwardRef} from 'react';
-import {getStyle, getSymbols} from './utils';
-import {useFocusState} from './useFocusState';
-import {styles} from './CodeField.styles';
+import React, { forwardRef } from 'react';
+import { TextInput, View } from 'react-native';
+import { styles } from './CodeField.styles';
+import { useFocusState } from './useFocusState';
+import { getStyle, getSymbols } from './utils';
 const DEFAULT_CELL_COUNT = 4;
 function CodeFieldComponent(
   {
@@ -31,32 +31,29 @@ function CodeFieldComponent(
       });
     },
   );
-  return React.createElement(
-    RootComponent,
-    {...RootProps, style: getStyle(styles.root, rootStyle)},
-    cells,
-    React.createElement(InputComponent, {
-      disableFullscreenUI: true,
-      // Use `caretHidden={false}` when `value={''}` and user can't paste\copy text because menu doesn't appear
-      // See more: https://github.com/retyui/react-native-confirmation-code-field/issues/140
-      caretHidden: true,
-      spellCheck: false,
-      autoCorrect: false,
-      blurOnSubmit: false,
-      clearButtonMode: 'never',
-      autoCapitalize: 'characters',
-      underlineColorAndroid: 'transparent',
-      maxLength:
-        value && value.length > cellCount
-          ? cellCount + value?.split(' ').length - 1
-          : cellCount,
-      ...rest,
-      value: value,
-      onBlur: focusState.onBlur,
-      onFocus: focusState.onFocus,
-      style: getStyle(styles.textInput, textInputStyle),
-      ref: ref,
-    }),
+  return (
+    <RootComponent {...RootProps} style={getStyle(styles.root, rootStyle)}>
+      {cells}
+      <InputComponent
+        disableFullscreenUI
+        // Use `caretHidden={false}` when `value={''}` and user can't paste\copy text because menu doesn't appear
+        // See more: https://github.com/retyui/react-native-confirmation-code-field/issues/140
+        caretHidden={true}
+        spellCheck={false}
+        autoCorrect={false}
+        blurOnSubmit={false}
+        clearButtonMode="never"
+        autoCapitalize="characters"
+        underlineColorAndroid="transparent"
+        maxLength={cellCount + value?.split(' ').length - 1}
+        {...rest}
+        value={value}
+        onBlur={focusState.onBlur}
+        onFocus={focusState.onFocus}
+        style={getStyle(styles.textInput, textInputStyle)}
+        ref={ref}
+      />
+    </RootComponent>
   );
 }
 export const CodeField = forwardRef(CodeFieldComponent);

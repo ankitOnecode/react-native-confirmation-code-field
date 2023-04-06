@@ -1,5 +1,5 @@
-import {useMemo, useRef, useEffect} from 'react';
-import {Platform} from 'react-native';
+import { useEffect, useMemo, useRef } from 'react';
+import { Platform } from 'react-native';
 const findIndex = ({locationX, locationY}, map) => {
   for (const [index, {x, y, xEnd, yEnd}] of Object.entries(map)) {
     if (
@@ -17,31 +17,23 @@ export const useClearByFocusCell = (options) => {
   const valueRef = useRef(options);
   const cellsLayouts = useRef({});
   valueRef.current = options;
-  const {setValue} = valueRef.current;
+  const { setValue } = valueRef.current;
   useEffect(() => {
-    if (options && options?.value && options?.value?.length > 4) {
-      setValue(
-        options.value.length > 4
-          ? options.value
-              .replace(' ', options.value[options.value.length - 1])
-              .slice(0, 4)
-          : options.value,
-      );
+    if (options.value.length > 4) {
+      setValue(options.value.length > 4 ? options.value.replace(" ", options.value[options.value.length - 1]).slice(0, 4) : text);
     }
-  }, [options.value]);
+  }, [options.value])
+
   const clearCodeByCoords = (coords) => {
     const index = findIndex(coords, cellsLayouts.current);
     if (index !== -1) {
-      const {value, setValue} = valueRef.current;
-      const text =
-        value && value?.length > 0
-          ? value?.substring(0, index) + ' ' + value?.substring(index + 1)
-          : (value || '')?.slice(0, index);
+      const { value, setValue } = valueRef.current;
+      const text = value.length > 0 ? value.substring(0, index) + ' ' + value.substring(index + 1) : (value || '').slice(0, index);
       setValue(text);
     }
   };
   const getCellOnLayoutHandler = (index) => (event) => {
-    const {width, height, x, y} = event.nativeEvent.layout;
+    const { width, height, x, y } = event.nativeEvent.layout;
     cellsLayouts.current[`${index}`] = {
       x,
       xEnd: x + width,
@@ -56,11 +48,11 @@ export const useClearByFocusCell = (options) => {
     const [offset] = event.target.getClientRects();
     const locationX = event.clientX - offset.left;
     const locationY = event.clientY - offset.top;
-    clearCodeByCoords({locationX, locationY});
+    clearCodeByCoords({ locationX, locationY });
   };
   return [
     // @ts-expect-error: for web support
-    useMemo(() => Platform.select({web: {onClick}, default: {onPressOut}}), []),
+    useMemo(() => Platform.select({ web: { onClick }, default: { onPressOut } }), []),
     getCellOnLayoutHandler,
   ];
 };
