@@ -45,17 +45,18 @@ type HookResult = [
 export const useClearByFocusCell = (options: Options): HookResult => {
   const valueRef = useRef<Options>(options);
   const cellsLayouts = useRef<LayoutsMap>({});
+  const otpInputLength = Object.keys(cellsLayouts.current).length
 
   valueRef.current = options;
   const {setValue} = valueRef.current;
 
   useEffect(() => {
-    if (options && options?.value && options?.value?.length > 4) {
+    if (options && options?.value && options?.value?.length > otpInputLength) {
       setValue(
-        options.value.length > 4
+        options.value.length > otpInputLength
           ? options.value
               .replace(' ', options.value[options.value.length - 1])
-              .slice(0, 4)
+              .slice(0, otpInputLength)
           : options.value,
       );
     }
