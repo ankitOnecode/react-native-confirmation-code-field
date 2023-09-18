@@ -1,5 +1,5 @@
-import {useMemo, useRef, useEffect} from 'react';
-import {Platform} from 'react-native';
+import { useEffect, useMemo, useRef } from 'react';
+import { Platform } from 'react-native';
 const findIndex = ({locationX, locationY}, map) => {
   for (const [index, {x, y, xEnd, yEnd}] of Object.entries(map)) {
     if (
@@ -34,10 +34,12 @@ export const useClearByFocusCell = (options) => {
     const index = findIndex(coords, cellsLayouts.current);
     if (index !== -1) {
       const {value, setValue} = valueRef.current;
-      const text =
+      if (value.includes(' ')) return
+      let text =
         value && value?.length > 0
           ? value?.substring(0, index) + ' ' + value?.substring(index + 1)
           : (value || '')?.slice(0, index);
+      text = text.length >= otpInputLength && text[otpInputLength - 1] === ' ' ? text.substring(0, otpInputLength - 1) : text
       setValue(text);
     }
   };

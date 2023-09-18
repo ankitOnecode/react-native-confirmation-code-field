@@ -1,8 +1,8 @@
-import {TextInput, View} from 'react-native';
-import React, {forwardRef} from 'react';
-import {getStyle, getSymbols} from './utils';
-import {useFocusState} from './useFocusState';
-import {styles} from './CodeField.styles';
+import React, { forwardRef } from 'react';
+import { TextInput, View } from 'react-native';
+import { styles } from './CodeField.styles';
+import { useFocusState } from './useFocusState';
+import { getStyle, getSymbols } from './utils';
 const DEFAULT_CELL_COUNT = 4;
 function CodeFieldComponent(
   {
@@ -46,10 +46,7 @@ function CodeFieldComponent(
       clearButtonMode: 'never',
       autoCapitalize: 'characters',
       underlineColorAndroid: 'transparent',
-      maxLength:
-        value && value.length > cellCount
-          ? cellCount + value?.split(' ').length - 1
-          : cellCount,
+      maxLength: cellCount + 1,
       ...rest,
       value: value,
       onBlur: focusState.onBlur,
